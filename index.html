@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Record Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= LOGIN PAGE ================= -->
+
+    <section id="loginPage" class="login-page">
+
+        <div class="login-card">
+
+            <div class="lock-logo">🔐</div>
+
+            <h1>Password Record Manager</h1>
+
+            <p class="welcome">
+                Securely manage your passwords in one place.
+            </p>
+
+            <label>Master Key</label>
+
+            <input
+                type="password"
+                id="masterKey"
+                placeholder="Enter your master key"
+            >
+
+            <button class="primary-btn" onclick="login()">
+                Unlock Vault
+            </button>
+
+            <p id="loginError" class="error"></p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MAIN MANAGER ================= -->
+
+    <section id="managerPage" class="manager-page hidden">
+
+        <div class="manager-container">
+
+            <!-- HEADER -->
+
+            <header class="header">
+
+                <div class="brand">
+
+                    <div class="small-logo">🔐</div>
+
+                    <div>
+                        <h2>Password Record Manager</h2>
+                        <span>Secure password storage</span>
+                    </div>
+
+                </div>
+
+                <button class="lock-btn" onclick="logout()">
+                    🔒 Lock
+                </button>
+
+            </header>
+
+
+            <!-- SMALL SECURITY INFO -->
+
+            <div class="security-strip">
+
+                <div class="security-card">
+                    <span>VAULT</span>
+                    <strong>SECURE</strong>
+                </div>
+
+                <div class="security-card">
+                    <span>SESSION</span>
+                    <strong>PROTECTED</strong>
+                </div>
+
+                <div class="security-card">
+                    <span>PASSWORD</span>
+                    <strong>CHECK READY</strong>
+                </div>
+
+                <div class="security-card">
+                    <span>STATUS</span>
+                    <strong>ACTIVE</strong>
+                </div>
+
+            </div>
+
+
+            <!-- PASSWORD RECORDS -->
+
+            <div class="record-card">
+
+                <div class="section-heading">
+
+                    <div>
+                        <h3>Password Records</h3>
+                        <p>Manage your saved account credentials.</p>
+                    </div>
+
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Website</th>
+                                <th>Username / Email</th>
+                                <th>Password</th>
+                                <th>URL</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="recordTable">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div id="emptyMessage" class="empty-message">
+                    No password records added yet.
+                </div>
+
+            </div>
+
+
+            <!-- MAIN FEATURES -->
+
+            <div class="feature-bar">
+
+                <button onclick="openAdd()">＋ Add</button>
+
+                <button onclick="openSearch()">⌕ Search</button>
+
+                <button onclick="openUpdate()">✎ Update</button>
+
+                <button onclick="openDelete()">× Delete</button>
+
+                <button onclick="openCheck()">✓ Check Password</button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= ADD ================= -->
+
+    <div id="addPanel" class="popup hidden">
+
+        <div class="popup-box">
+
+            <button class="close-btn" onclick="closePanels()">×</button>
+
+            <h2>Add Password Record</h2>
+
+            <p class="popup-subtitle">
+                Save a new account securely.
+            </p>
+
+            <label>Website</label>
+
+            <input
+                type="text"
+                id="addWebsite"
+                placeholder="e.g. Gmail"
+            >
+
+            <label>Username / Email</label>
+
+            <input
+                type="text"
+                id="addUsername"
+                placeholder="e.g. example@gmail.com"
+            >
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                id="addPassword"
+                placeholder="Enter password"
+            >
+
+            <label>
+                URL
+                <span class="optional">(Optional)</span>
+            </label>
+
+            <input
+                type="text"
+                id="addURL"
+                placeholder="https://example.com"
+            >
+
+            <button class="primary-btn" onclick="addRecord()">
+                Save Record
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= SEARCH ================= -->
+
+    <div id="searchPanel" class="popup hidden">
+
+        <div class="popup-box">
+
+            <button class="close-btn" onclick="closePanels()">×</button>
+
+            <h2>Search Password</h2>
+
+            <p class="popup-subtitle">
+                Search using website or account username.
+            </p>
+
+            <label>Website</label>
+
+            <input
+                type="text"
+                id="searchWebsite"
+                placeholder="e.g. Gmail"
+            >
+
+            <label>Username / Email</label>
+
+            <input
+                type="text"
+                id="searchUsername"
+                placeholder="e.g. example@gmail.com"
+            >
+
+            <button class="primary-btn" onclick="searchRecord()">
+                Search
+            </button>
+
+            <div id="searchResult" class="result-box"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= UPDATE ================= -->
+
+    <div id="updatePanel" class="popup hidden">
+
+        <div class="popup-box">
+
+            <button class="close-btn" onclick="closePanels()">×</button>
+
+            <h2>Update Password</h2>
+
+            <p class="popup-subtitle">
+                First identify the exact account, then update it.
+            </p>
+
+            <label>Website</label>
+
+            <input
+                type="text"
+                id="updateWebsite"
+                placeholder="e.g. Gmail"
+            >
+
+            <label>Current Username / Email</label>
+
+            <input
+                type="text"
+                id="updateUsername"
+                placeholder="Account username"
+            >
+
+            <label>New Password</label>
+
+            <input
+                type="password"
+                id="updatePassword"
+                placeholder="Leave empty to keep current password"
+            >
+
+            <label>New URL</label>
+
+            <input
+                type="text"
+                id="updateURL"
+                placeholder="Optional"
+            >
+
+            <button class="primary-btn" onclick="updateRecord()">
+                Update Record
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= DELETE ================= -->
+
+    <div id="deletePanel" class="popup hidden">
+
+        <div class="popup-box delete-box">
+
+            <button class="close-btn" onclick="closePanels()">×</button>
+
+            <div class="danger-icon">⚠</div>
+
+            <h2>Delete Password Record</h2>
+
+            <p class="popup-subtitle">
+                Identify the exact account before permanently deleting it.
+            </p>
+
+            <label>Website</label>
+
+            <input
+                type="text"
+                id="deleteWebsite"
+                placeholder="e.g. Gmail"
+            >
+
+            <label>Username / Email</label>
+
+            <input
+                type="text"
+                id="deleteUsername"
+                placeholder="e.g. example@gmail.com"
+            >
+
+            <label>Type confirmation</label>
+
+            <input
+                type="text"
+                id="deleteConfirmation"
+                placeholder="Type PERMANENTLY DELETE"
+            >
+
+            <button class="delete-btn" onclick="deleteRecord()">
+                Permanently Delete
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= CHECK PASSWORD ================= -->
+
+    <div id="checkPanel" class="popup hidden">
+
+        <div class="popup-box">
+
+            <button class="close-btn" onclick="closePanels()">×</button>
+
+            <h2>Password Security Check</h2>
+
+            <p class="popup-subtitle">
+                Check the strength of a password.
+            </p>
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                id="checkPassword"
+                placeholder="Enter password"
+            >
+
+            <button class="primary-btn" onclick="checkPassword()">
+                Check Strength
+            </button>
+
+            <div id="passwordResult" class="result-box"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= NOTIFICATION ================= -->
+
+    <div id="notification" class="notification">
+        Record saved successfully.
+    </div>
+
+
+    <!-- JAVASCRIPT FILE -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
